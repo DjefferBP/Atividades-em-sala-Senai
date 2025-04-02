@@ -1,0 +1,50 @@
+using static System.Console;
+
+WriteLine("Insira 3 números para descobrir a média deles.");
+int n1, n2, n3;
+n1 = Convert.ToInt32(ReadLine());
+n2 = Convert.ToInt32(ReadLine());
+n3 = Convert.ToInt32(ReadLine());
+int media = (n1 + n2 + n3) / 3;
+WriteLine($"Sua média é: {media}.");
+
+int funcaoSomar(int a, int b)
+{
+    return a + b;
+}
+
+WriteLine("Digite dois números para que eles sejam somados: ");
+int num1, num2; 
+num1 = Convert.ToInt32(ReadLine());
+num2 = Convert.ToInt32(ReadLine());
+int soma = funcaoSomar(num1, num2);
+WriteLine($"A soma dos números digitados por você é: {soma}.");
+
+
+WriteLine("Digite dois valores para números: ");
+int num3, num4;
+
+num3 = Convert.ToInt32(ReadLine());
+num4 = Convert.ToInt32(ReadLine());
+
+num3 = num3 + num4;
+num4 = num3 - num4;
+num3 = num3 - num4;
+WriteLine($"Os valores invertidos é: {num3} e {num4}.");
+
+
+double funcaoParaCalcularDesconto(double a)
+{
+    double desconto = a * 0.1;
+    double valorFinal = a - desconto;
+    return valorFinal;
+}
+string produto = "Geladeira";
+double preco;
+WriteLine("Digite o preço do seu produto para ganhar um desconto de 10%. ");
+preco = Convert.ToDouble(ReadLine());
+double desconto;
+desconto = preco * 0.1;
+double comDesconto = funcaoParaCalcularDesconto(preco);
+WriteLine($"O seu produto é a {produto}, o preço dele é R${preco}, odesconto foi de R${Math.Round(desconto, 2)},  e o preço dele com desconto é R${comDesconto}.");
+ReadKey();
