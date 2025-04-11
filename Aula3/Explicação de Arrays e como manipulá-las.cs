@@ -1,5 +1,7 @@
 using static System.Console;
 // Aula 10/04/2025 - Arrays
+// Em C#, um array é uma coleção de elementos do mesmo tipo, usada para armazenar e acessar dados de forma organizada. Cada elemento em um array é acessado por um índice numérico, e os arrays têm um tamanho fixo quando são criados. 
+
 // Aprendendo como declarar arrays, conhecendo arrays e índex, usando loops para percorrer o array, trocando valores existentes no array, usando Sort para organizar a lista em  ordem alfabética.
 /*
 string[] carros = { "Volvo", "Peugeot", "Nissan" };
