@@ -1,0 +1,74 @@
+Aula 14/04
+
+using static System.Console;
+// Aprendendo sobre Listas, e como manipulá-las
+List<string> animaisnovos = new List<string>();
+animaisnovos.Add("Macaco");
+animaisnovos.Add("Girafa");
+animaisnovos.Add("Leão");
+animaisnovos.Add("Camundongo");
+foreach (string i in animaisnovos)
+{
+    WriteLine(i);
+}
+WriteLine("O 4° elemento da lista é: " + animaisnovos[1] + "\n");
+WriteLine("Número de elementos da lista: " + animaisnovos.Count + "\n");
+WriteLine("Capacidade da minha lista: " + animaisnovos.Capacity);
+
+List<int> numberList = new List<int>();
+numberList.Add(1);
+numberList.Add(2);
+numberList.Add(32);
+numberList.Add(43);
+numberList.Add(76);
+numberList.Add(12);
+numberList.Sort();
+WriteLine("A lista de números é");
+foreach (int i in numberList)
+{
+    WriteLine(i.ToString());
+}
+numberList.Insert(3, 69);
+WriteLine("Nova lista de números com outro número adicionado com o método Insert");
+foreach (int b in numberList)
+{
+    WriteLine(b.ToString());
+}
+numberList.RemoveAt(5);
+WriteLine("Nova lista de números com outro número removido com o método Remove");
+foreach (var item in numberList)
+{
+    WriteLine(item.ToString());
+}
+
+
+int idx = numberList.IndexOf(69);
+if (idx >= 0)
+{
+    WriteLine("O número 69 está na posição: " + idx.ToString());
+}
+else
+{
+    WriteLine("Elemento não encontrado");
+}
+
+WriteLine("A lista no formato decrescente é:");
+numberList.Reverse();
+foreach(int item2 in numberList)
+{
+    WriteLine(item2);
+}
+
+
+List<string> nomes = new List<string>();
+string nome;
+WriteLine("Digite nomes para ser inserido na lista: ");
+for (int i = 0; i < 10; i++)
+{
+    nome = ReadLine();
+    nomes.Add(nome);
+}
+WriteLine("Número de elementos na lista: " + nomes.Count);
+
+WriteLine($"O primeiro elemento da lista é: {nomes[0].ToString()} e o último é o {nomes[9].ToString()}.");
+ReadLine();
