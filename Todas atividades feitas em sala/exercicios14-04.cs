@@ -98,16 +98,24 @@ for (int i = 0; i < 20; i++)
     idades.Add(idade);
 }
 List<string> candidatasAptas = new List<string>();
-for (int i = 0; i < 20; i++)
-{   
+for (int i = 0; i < nomes.Count; i++)
+{
     if (idades[i] >= 18 && idades[i] <= 20)
     {
         candidatasAptas.Add(nomes[i]);
     }
-    else
+}
+Write("CandidatasAptas: ");
+for (int i = 0; i < candidatasAptas.Count; i++)
+{
+    Write(candidatasAptas[i]);
+}
+WriteLine("Candidatas não aptas: ");
+for (int i = 0; i < nomes.Count; i++)
+{
+    if (candidatasAptas.Contains(nomes[i]) == false)
     {
-        WriteLine($"A candidata {nomes[i]} não está apta para a campanha.");
-        nomes.RemoveAt(i);
+        Write(nomes[i]);
     }
 }
 
@@ -126,7 +134,7 @@ for (int i = 0; i < 20; i++)
     v1.Add(random.Next(1, 100));
     v2.Add(random.Next(1, 100));
 }
-WriteLine("V1:");
+Write("V1: ");
 for (int i = 0; i < v1.Count; i++)
 {
     if (i == v1.Count - 1)
@@ -142,7 +150,7 @@ for (int i = 0; i < v1.Count; i++)
         Write(v1[i] + ", ");
     }
 }
-WriteLine("V2:");
+Write("V2: ");
 for (int i = 0; i < v2.Count; i++)
 {
     if (i == v2.Count - 1)
@@ -209,11 +217,6 @@ if (alunosAcimaDeSete > 0)
 else
 {
     WriteLine("Não há nenhum aluno com nota acima de 7.0.");
-}
-
-if (notas.All(nota => nota <= 5))
-{
-    WriteLine("Não há nenhum aluno com nota acima de 5.");
 }
 
 6- Durante uma corrida de automóveis com 12 voltas de duração foram
