@@ -1,13 +1,12 @@
 using static System.Console;
-using System;
 
 namespace AtividadeValendoNota
 {
     class turma
     {
-        public static void printMenu(string[] options)
+        public static void menuInicial(string[] opcoes)
         {
-            foreach (string option in options)
+            foreach (string option in opcoes)
             {
                 WriteLine(option);
             }
@@ -16,26 +15,32 @@ namespace AtividadeValendoNota
 
         public static void Main(string[] args)
         {
-            string[] options = {
+            string[] opcoes = {
                 "1 - Cadastrar Turma",
                 "2 - Cadastrar aluno",
                 "3 - Lista de aprovados",
                 "4 - Lista de recuperação",
-                "5 - Lista de recuperação",
+                "5 - Lista de reprovados",
                 "6 - Lista geral",
-                "7 - Sair"
+                "7 - Editar Aluno",
+                "8 - Editar Turma",
+                "9 - Excluir Aluno",
+                "10 - Excluir Turma",
+                "11 - Gravar em um arquivo",
+                "12 - Ler o arquivo",
+                "13 - Sair"
             };
             int option = 0;
             while (true)
             {
-                printMenu(options);
+                menuInicial(opcoes);
                 try
                 {
                     option = Convert.ToInt32(ReadLine());
                 }
                 catch (System.FormatException)
                 {
-                    WriteLine("Por favor, digite uma opção entre 1 e " + options.Length);
+                    WriteLine("Por favor, digite uma opção entre 1 e " + opcoes.Length);
                     continue;
                 }
                 catch (Exception)
@@ -65,11 +70,29 @@ namespace AtividadeValendoNota
                         listaGeral();
                         break;
                     case 7:
+                        editarAluno();
+                        break;
+                    case 8:
+                        editarTurma();
+                        break;
+                    case 9:
+                        excluirAluno();
+                        break;
+                    case 10:
+                        excluirTurma();
+                        break;
+                    case 11:
+                        gravarArquivo();
+                        break;
+                    case 12:
+                        lerArquivo();
+                        break;
+                    case 13:
                         Environment.Exit(0);
                         ReadKey();
                         break;
                     default:
-                        WriteLine("Por favor, Digite uma opção entre 1 e " + options.Length);
+                        WriteLine("Por favor, Digite uma opção entre 1 e " + opcoes.Length);
                         break;
                 }
 
@@ -236,12 +259,11 @@ namespace AtividadeValendoNota
             {
                 Clear();
                 WriteLine("APROVADOS:\n");
-                foreach (var item in mediaCadaAluno)
+                for (int i = 0; i < mediaCadaAluno.Count; i++)
                 {
-                    if (item >= 7)
+                    if (mediaCadaAluno[i] >= 7)
                     {
-                        int idx = mediaCadaAluno.IndexOf(item);
-                        WriteLine($"Nome: {alunos[idx]} || Média: {Math.Round(item, 1)}");
+                        WriteLine($"Nome: {alunos[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)}");
                     }
                 }
                 WriteLine("Pressione qualquer tecla para voltar.");
@@ -263,14 +285,14 @@ namespace AtividadeValendoNota
             {
                 Clear();
                 WriteLine("RECUPERAÇÃO:\n");
-                foreach (var item in mediaCadaAluno)
+                for (int i = 0; i < mediaCadaAluno.Count; i++)
                 {
-                    if (item < 7 && item >= 5)
+                    if (mediaCadaAluno[i]> 5 && mediaCadaAluno[i] < 7)
                     {
-                        int idx = mediaCadaAluno.IndexOf(item);
-                        WriteLine($"Nome: {alunos[idx]} || Média: {Math.Round(item, 1)}");
+                        WriteLine($"Nome: {alunos[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)}");
                     }
                 }
+
                 WriteLine("Pressione qualquer tecla para voltar.");
                 ReadKey();
                 Clear();
@@ -290,12 +312,11 @@ namespace AtividadeValendoNota
             {
                 Clear();
                 WriteLine("REPROVADOS:\n");
-                foreach (var item in mediaCadaAluno)
+                for (int i = 0; i < mediaCadaAluno.Count; i++)
                 {
-                    if (item < 5)
+                    if (mediaCadaAluno[i] < 5)
                     {
-                        int idx = mediaCadaAluno.IndexOf(item);
-                        WriteLine($"Nome: {alunos[idx]} || Média: {Math.Round(item, 1)}");
+                        WriteLine($"Nome: {alunos[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)}");
                     }
                 }
                 WriteLine("Pressione qualquer tecla para voltar.");
@@ -317,17 +338,187 @@ namespace AtividadeValendoNota
             {
                 Clear();
                 WriteLine("TODOS ALUNOS:\n");
-                for (var idx = 0; idx < mediaCadaAluno.Count; idx++)
+                for (var i = 0; i < mediaCadaAluno.Count; i++)
                 {
-                    string cod = codigoAluno[idx];
+                    string cod = codigoAluno[i];
                     int indexTurma = codigoIdentificador.IndexOf(cod);
                     string nomeTurma = turmas[indexTurma];
-                    WriteLine($"Turma: {nomeTurma} || Nome: {alunos[idx]} || 1° Nota: {notas1[idx]} || 2° Nota: {notas2[idx]} || Média: {Math.Round(mediaCadaAluno[idx], 1)}");
+                    WriteLine($"Turma: {nomeTurma} || Nome: {alunos[i]} || 1° Nota: {notas1[i]} || 2° Nota: {notas2[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)}");
                 }
                 WriteLine("Pressione qualquer tecla para voltar.");
                 ReadKey();
                 Clear();
             }
+        }
+
+        public static void editarAluno()
+        {
+            Clear();
+            Write("EDITAR ALUNO: \n");
+            WriteLine("");
+            WriteLine("O que você deseja editar? \n1 - Somente o nome \n2 - Somente turma \n3 - Somente notas \n4 - Todos registros");
+            string opcao = ReadLine();
+            switch (opcao)
+            {
+                case "1":
+                    editarNomeAluno();
+                    break;
+                case "2":
+                    editarTurmaALuno();
+                    break;
+                case "3":
+                    editarNotaAluno();
+                    break;
+                case "4":
+                    editarTudo();
+                    break;
+            }
+        }
+        private static void editarNomeAluno()
+        {
+            Clear();
+            Write("Digite o nome do aluno que deseja editar: ");
+            string nome = ReadLine();
+            int index = alunos.IndexOf(nome);
+            if (index >= 0)
+            {
+                WriteLine($"O aluno a ser editado é o {alunos[index]}.\n");
+                Write("Regite o nome: ");
+                string novoNome = ReadLine();
+                var igual = alunos.Any(x => x == novoNome);
+                if (igual == true)
+                {
+                    WriteLine("Este nome já está cadastrado. Tente novamente.");
+                    Clear();
+                    return;
+                }
+                else
+                {
+                    alunos[index] = novoNome;
+                    ForegroundColor = ConsoleColor.Green;
+                    WriteLine("Nome alterado com sucesso!");
+                    ResetColor();
+                    Clear();
+                    return;
+                }
+            }
+            else
+            {
+                ForegroundColor = ConsoleColor.Red;
+                WriteLine("Este nome não consta em nossos registros!");
+                ResetColor();
+                Clear();
+                return;
+            }
+            
+        }
+        
+        private static void editarTurmaAluno()
+        {
+            Clear();
+            Write("Digite o nome da turma do aluno que deseja editar: ");
+            string turma = ReadLine();
+            int index = turmas.IndexOf(turma);
+            WriteLine("");
+            Write("Digite o identificador da turma: ");
+            string idAt = ReadLine();
+            int idx = codigoIdentificador.IndexOf(idAt);
+            if (index >= 0)
+            {
+                WriteLine($"A turma do aluno atual é: {turma[index]} e o código identificador desta turma é o: {codigoIdentificador[idx]}\n");
+                Write("Digite a qual turma este aluno irá pertencer: ");
+                string novaTurma = ReadLine();
+                WriteLine("Digite o código identificador desta turma: ");
+                if
+            }
+            else
+            {
+                ForegroundColor = ConsoleColor.Red;
+                WriteLine("Esta turma não consta em nossos registros!");
+                ResetColor();
+                Clear();
+                return;
+            }
+        }
+
+        private static void editarTurma()
+        {
+            Clear();
+            Write("DIGITE O NOME DA TURMA QUE VOCÊ DESEJA EDITAR:\n");
+            string nome = ReadLine();
+            int index = turmas.IndexOf(nome);
+            if (index >= 0)
+            {
+                WriteLine($"O aluno a ser editado é o {turmas[index]}.\n");
+                Write("Regite o nome: ");
+                string novoNome = ReadLine();
+                var igual = turmas.Any(x => x == novoNome);
+                if (igual == true)
+                {
+                    WriteLine("Este nome já está cadastrado. Tente novamente.");
+                    return;
+                }
+                else
+                {
+                    turmas[index] = novoNome;
+                }
+            }
+            else
+            {
+                WriteLine("Este nome não existe nos registros.");
+            }
+            Clear();
+        }
+
+        private static void excluirAluno()
+        {
+
+        }
+        private static void gravarArquivo()
+        {
+            Clear();
+            WriteLine("GRAVAR ARQUIVO:\n");
+            try
+            {
+                StreamWriter dadosnomes;
+                string arq = @"C:\Nomes\nomes.txt";
+                dadosnomes = File.CreateText(arq);
+                for (var i = 0; i < alunos.Count; i++)
+                {
+                    string cod = codigoAluno[i];
+                    int indexTurma = codigoIdentificador.IndexOf(cod);
+                    string nomeTurma = turmas[indexTurma];
+                    dadosnomes.WriteLine($"Turma: {nomeTurma} || Nome: {alunos[i]} || 1° Nota: {notas1[i]} || 2° Nota: {notas2[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)}");
+                }
+                dadosnomes.Close();
+            }
+            catch (Exception e)
+            {
+                WriteLine($"{e.Message}");
+            }
+            finally
+            {
+                ForegroundColor = ConsoleColor.Green;
+                WriteLine("<<<<<< DADOS GRAVADOS COM SUCESSO! >>>>>>");
+                ResetColor();
+
+            }
+            Clear();
+        }
+
+        private static void lerArquivo()
+        {
+            Clear();
+            WriteLine("LER ARQUIVO:\n");
+            var nome = File.ReadAllLines(@"C:\Nomes\nomes.txt");
+            for (int i = 0; i < nome.Length; i++)
+            {
+                alunos.Add(nome[i]);
+            }
+            ForegroundColor = ConsoleColor.Green;
+            WriteLine("<<<<<<< LEITURA REALIZADA COM SUCESSO! >>>>>>>");
+            ResetColor();
+            Clear();
         }
     }
 
