@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using static System.Console;
 
 namespace AtividadeValendoNota
@@ -115,9 +117,14 @@ namespace AtividadeValendoNota
                 WriteLine("Digite a turma.");
                 string turma = ReadLine();
                 var repetido = turmas.Any(x => x == (turma));
+                string palavraNull = "";
+                if (turma == palavraNull)
+                {
+                    WriteLine("Não é permitido dados nulos!");
+                }
                 if (repetido == true)
                 {
-                    WriteLine("Aluno já cadastrado, Refaça a operação\n");
+                    WriteLine("Turma já cadastrada, Refaça a operação\n");
                     return;
                 }
                 else
@@ -125,9 +132,14 @@ namespace AtividadeValendoNota
                     turmas.Add(turma);
 
                 }
-                WriteLine("Digite seu código identificador.");
+                WriteLine("Digite o código identificador da turma.");
                 string identificador = ReadLine();
                 var repetido1 = codigoIdentificador.Any(codigo => codigo == (identificador));
+                string identificadorNull = "";
+                if (turma == identificadorNull)
+                {
+                    WriteLine("Não é permitido dados nulos!");
+                }
                 if (repetido1 == true)
                 {
                     WriteLine("O código identificador inserido já pertence à alguma turma, cadastre outro código.");
@@ -214,7 +226,7 @@ namespace AtividadeValendoNota
                 WriteLine("Digite o código identificador da turma do aluno:");
                 string codTurma = ReadLine();
 
-                if (!codigoIdentificador.Contains(codTurma))
+                if (codigoIdentificador.Contains(codTurma) == false)
                 {
                     WriteLine("Código de turma inválido! Refaça a operação.");
                     return;
@@ -287,7 +299,7 @@ namespace AtividadeValendoNota
                 WriteLine("RECUPERAÇÃO:\n");
                 for (int i = 0; i < mediaCadaAluno.Count; i++)
                 {
-                    if (mediaCadaAluno[i]> 5 && mediaCadaAluno[i] < 7)
+                    if (mediaCadaAluno[i] > 5 && mediaCadaAluno[i] < 7)
                     {
                         WriteLine($"Nome: {alunos[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)}");
                     }
@@ -353,83 +365,135 @@ namespace AtividadeValendoNota
 
         public static void editarAluno()
         {
-            Clear();
-            Write("EDITAR ALUNO: \n");
-            WriteLine("");
-            WriteLine("O que você deseja editar? \n1 - Somente o nome \n2 - Somente turma \n3 - Somente notas \n4 - Todos registros");
-            string opcao = ReadLine();
-            switch (opcao)
+            if (alunos.Count == 0)
             {
-                case "1":
-                    editarNomeAluno();
-                    break;
-                case "2":
-                    editarTurmaALuno();
-                    break;
-                case "3":
-                    editarNotaAluno();
-                    break;
-                case "4":
-                    editarTudo();
-                    break;
+                WriteLine("Nenhum Aluno cadastrado.");
+                ReadKey();
+                Clear();
+                return;
+            }
+            else
+            {
+                Clear();
+                Write("EDITAR ALUNO: \n");
+                WriteLine("");
+                WriteLine("O que você deseja editar? \n1 - Somente o nome \n2 - Somente turma \n3 - Somente notas \n4 - Todos registros");
+                string opcao = ReadLine();
+                switch (opcao)
+                {
+                    case "1":
+                        editarNomeAluno();
+                        break;
+                    case "2":
+                        editarTurmaAluno();
+                        break;
+                    case "3":
+                        editarNotaAluno();
+                        break;
+                    case "4":
+                        editarTudo();
+                        break;
+                }
             }
         }
         private static void editarNomeAluno()
         {
-            Clear();
-            Write("Digite o nome do aluno que deseja editar: ");
-            string nome = ReadLine();
-            int index = alunos.IndexOf(nome);
-            if (index >= 0)
+            if (alunos.Count == 0)
             {
-                WriteLine($"O aluno a ser editado é o {alunos[index]}.\n");
-                Write("Regite o nome: ");
-                string novoNome = ReadLine();
-                var igual = alunos.Any(x => x == novoNome);
-                if (igual == true)
+                WriteLine("Nenhum Aluno cadastrado.");
+                ReadKey();
+                Clear();
+                return;
+            }
+            else
+            {
+                Write("Digite o nome do aluno que deseja editar: ");
+                string nome = ReadLine();
+                int index = alunos.IndexOf(nome);
+                if (index >= 0)
                 {
-                    WriteLine("Este nome já está cadastrado. Tente novamente.");
-                    Clear();
-                    return;
+                    WriteLine($"O aluno a ser editado é o {alunos[index]}.\n");
+                    Write("Regite o nome: ");
+                    string novoNome = ReadLine();
+                    var igual = alunos.Any(x => x == novoNome);
+                    if (igual == true)
+                    {
+                        WriteLine("Este nome já está cadastrado. Tente novamente.");
+                        Clear();
+                        return;
+                    }
+                    else
+                    {
+                        alunos[index] = novoNome;
+                        ForegroundColor = ConsoleColor.Green;
+                        WriteLine("Nome alterado com sucesso!");
+                        ResetColor();
+                        Clear();
+                        return;
+                    }
                 }
                 else
                 {
-                    alunos[index] = novoNome;
-                    ForegroundColor = ConsoleColor.Green;
-                    WriteLine("Nome alterado com sucesso!");
+                    ForegroundColor = ConsoleColor.Red;
+                    WriteLine("Este nome não consta em nossos registros!");
                     ResetColor();
                     Clear();
                     return;
                 }
             }
-            else
+        }
+
+        private static void editarTurmaAluno()
+        {
+            if (alunos.Count == 0)
             {
-                ForegroundColor = ConsoleColor.Red;
-                WriteLine("Este nome não consta em nossos registros!");
-                ResetColor();
+                WriteLine("Nenhum Aluno cadastrado.");
+                ReadKey();
                 Clear();
                 return;
             }
-            
-        }
-        
-        private static void editarTurmaAluno()
-        {
-            Clear();
-            Write("Digite o nome da turma do aluno que deseja editar: ");
-            string turma = ReadLine();
-            int index = turmas.IndexOf(turma);
-            WriteLine("");
-            Write("Digite o identificador da turma: ");
-            string idAt = ReadLine();
-            int idx = codigoIdentificador.IndexOf(idAt);
-            if (index >= 0)
+            else
             {
-                WriteLine($"A turma do aluno atual é: {turma[index]} e o código identificador desta turma é o: {codigoIdentificador[idx]}\n");
-                Write("Digite a qual turma este aluno irá pertencer: ");
-                string novaTurma = ReadLine();
-                WriteLine("Digite o código identificador desta turma: ");
-                if
+                Write("DIGITE O NOME DO ALUNO A SER EDITADO: ");
+                string nome = ReadLine();
+                int indexAluno = alunos.IndexOf(nome);
+                if (indexAluno >= 0)
+                {
+                    int cod = indexAluno;
+                    WriteLine($"O aluno a ser editado é o: {alunos[indexAluno]}, a turma atual dele é o: {turmas[cod]} e o código identificador é o: {codigoIdentificador[cod]}.\n");
+                    WriteLine("Deseja realmente editar a turma do aluno? (s) / (n)\n");
+                    string opcao = ReadLine().ToLower();
+                    if (opcao == "s")
+                    {
+                        Write("\nPara qual turma o aluno será transferido: ");
+                        string transferencia = ReadLine();
+                        Write("\nDigite o código da turma que o aluno será transferido: ");
+                        string codTurma = ReadLine();
+                        if (turmas.Contains(transferencia) && codigoIdentificador.Contains(codTurma))
+                        {
+                            codigoAluno[cod] = codTurma;
+                            ForegroundColor = ConsoleColor.Green;
+                            WriteLine("Turma do aluno editada com sucesso!");
+                            ResetColor();
+                            WriteLine("Pressione qualquer tecla para voltar.");
+                            ReadKey();
+                            Clear();
+                        }
+                    }
+                    else if( opcao == "n")
+                    {
+                        ForegroundColor = ConsoleColor.Red;
+                        WriteLine("Operação cancelada! ");
+                        ResetColor();
+                        WriteLine("Pressione qualquer tecla para voltar.");
+                        ReadKey();
+                        Clear();
+                    }
+                    else
+                    {
+                        WriteLine("Digite uma entrada válida!");
+                    }
+
             }
             else
             {
@@ -439,86 +503,310 @@ namespace AtividadeValendoNota
                 Clear();
                 return;
             }
+            }
+            
+        }
+        private static void editarNotaAluno()
+        {
+            if (alunos.Count == 0)
+            {
+                WriteLine("Nenhum Aluno cadastrado.");
+                ReadKey();
+                Clear();
+                return;
+            }
+            else
+            {
+
+            }
+        }
+        private static void editarTudo()
+        {
+            if (alunos.Count == 0)
+            {
+                WriteLine("Nenhum Aluno cadastrado.");
+                ReadKey();
+                Clear();
+                return;
+            }
+            else
+            {
+
+            }
         }
 
         private static void editarTurma()
         {
-            Clear();
-            Write("DIGITE O NOME DA TURMA QUE VOCÊ DESEJA EDITAR:\n");
-            string nome = ReadLine();
-            int index = turmas.IndexOf(nome);
-            if (index >= 0)
+            if (alunos.Count == 0)
             {
-                WriteLine($"O aluno a ser editado é o {turmas[index]}.\n");
-                Write("Regite o nome: ");
-                string novoNome = ReadLine();
-                var igual = turmas.Any(x => x == novoNome);
-                if (igual == true)
-                {
-                    WriteLine("Este nome já está cadastrado. Tente novamente.");
-                    return;
-                }
-                else
-                {
-                    turmas[index] = novoNome;
-                }
+                WriteLine("Nenhum Aluno cadastrado.");
+                ReadKey();
+                Clear();
+                return;
             }
             else
             {
-                WriteLine("Este nome não existe nos registros.");
+                Write("DIGITE O NOME DA TURMA QUE VOCÊ DESEJA EDITAR: ");
+                string nome = ReadLine();
+                int index = turmas.IndexOf(nome);
+                Write("\nDIGITE O CÓDIGO ATUAL DA TURMA: ");
+                string idxCod = ReadLine();
+                int indexCod = codigoIdentificador.IndexOf(idxCod);
+                if (index >= 0)
+                {
+                    WriteLine($"A turma a ser editado é o {turmas[index]} e seu código identificador é o {codigoIdentificador[indexCod]}.\n");
+                    Write("Regite o nome: ");
+                    string novoNome = ReadLine();
+                    if (novoNome == turmas[index])
+                    {
+                        WriteLine("O novo nome da turma não pode ser igual ao anterior.");
+                    }
+                    else
+                    {
+                        turmas[index] = novoNome;
+                        ForegroundColor = ConsoleColor.Green;
+                        WriteLine("Turma do aluno editada com sucesso!");
+                        ResetColor();
+                        WriteLine("Pressione qualquer tecla para voltar.");
+                        ReadKey();
+                        Clear();
+                    }
+                }
+                else
+                {
+                    WriteLine("Este nome não existe nos registros.");
+                    Clear();
+                }
             }
-            Clear();
+            
         }
 
         private static void excluirAluno()
         {
+            if (alunos.Count == 0)
+            {
+                WriteLine("Nenhum Aluno cadastrado.");
+                ReadKey();
+                Clear();
+                return;
+            }
+            else
+            {
+                Write("DIGITE O NOME DO ALUNO QUE DESEJA EXCLUIR: ");
+                string nome = ReadLine();
+                int idxAluno = alunos.IndexOf(nome);
+                if (idxAluno >= 0)
+                {
+                    WriteLine($"O aluno a ser excluido é o {alunos[idxAluno]}.\n");
+                    WriteLine("Excluir o aluno significa que irá excluir ele da turma e suas notas. Deseja realmente excluir? (s) / (n)");
+                    string opcao = ReadLine().ToLower();
+                    if (opcao == "s")
+                    {
+                        alunos.RemoveAt(idxAluno);
+                        codigoAluno.RemoveAt(idxAluno);
+                        notas1.RemoveAt(idxAluno);
+                        notas2.RemoveAt(idxAluno);
+                        ForegroundColor = ConsoleColor.Green;
+                        WriteLine("Aluno excluído com sucesso! ");
+                        ResetColor();
+                        WriteLine("Pressione qualquer tecla para voltar.");
+                        ReadKey();
+                        Clear();
+                    }
+                    else if ( opcao == "n")
+                    {
+                        ForegroundColor = ConsoleColor.Red;
+                        WriteLine("Operação cancelada! ");
+                        ResetColor();
+                        WriteLine("Pressione qualquer tecla para voltar.");
+                        ReadKey();
+                        Clear();
+                    }
+                    else
+                    {
+                        WriteLine("Digite uma entrada válida! ");
+                    }
+                
+                }
+                else
+                {
+                    WriteLine("Este nome não existe nos registros.");
+                }
+            }
+            
+        }
 
+        private static void excluirTurma()
+        {
+            if (turmas.Count == 0)
+            {
+                WriteLine("Nenhuma turma cadastrada.");
+                ReadKey();
+                Clear();
+                return;
+            }
+            else
+            {
+                Write("DIGITE O NOME DA TURMA QUE VOCÊ DESEJA EXCLUIR: ");
+                string turmaASerDel = ReadLine();
+                int indexTurma = turmas.IndexOf(turmaASerDel);
+                if (indexTurma >= 0)
+                {
+                    string codTurma = codigoIdentificador[indexTurma];
+                    int quantidadeAlunosNaTurma = 0;
+                    for (int i = 0; i < codigoAluno.Count; i++)
+                    {
+                        if (codigoAluno[i] == codTurma)
+                        {
+                            quantidadeAlunosNaTurma++;
+                        }
+                    
+                    }
+                    if (quantidadeAlunosNaTurma == 0)
+                    {
+                        WriteLine("Esta turma não possui nenhum aluno, deseja exclui-la? (s) / (n)\n");
+                        string resposta = ReadLine();
+                        if (resposta == "s")
+                        {
+                            turmas.RemoveAt(indexTurma);
+                            codigoIdentificador.RemoveAt(indexTurma);
+                            ForegroundColor = ConsoleColor.Green;
+                            WriteLine("Turma excluída com sucesso! ");
+                            ResetColor();
+                            WriteLine("Pressione qualquer tecla para voltar.");
+                            ReadKey();
+                            Clear();
+                        }
+                        else if (resposta == "n")
+                        {
+                            ForegroundColor = ConsoleColor.Red;
+                            WriteLine("Operação cancelada! ");
+                            ResetColor();
+                            WriteLine("Pressione qualquer tecla para voltar.");
+                            ReadKey();
+                            Clear();
+                        }
+                        else
+                        {
+                            WriteLine("Digite uma entrada válida.");
+                        }
+                    }
+                    else
+                    {
+                        WriteLine("A turma não pode ser excluída pois possui alunos que estão estudando nela. Para exclui-la, você deverá escluir os alunos que estão associados a ela. Deseja excluir os alunos? (s) / (n)\n");
+                        string resposta = ReadLine();
+                        if (resposta == "s")
+                        {
+                            int i = 0;
+                            while (i < codigoAluno.Count)
+                            {
+                                if (codigoAluno[i] == codTurma)
+                                {
+                                    codigoAluno.RemoveAt(i);
+                                }
+                                else
+                                {
+                                    i++;
+                                }
+                            }
+                            ForegroundColor = ConsoleColor.Green;
+                            WriteLine("Alunos excluídos com sucesso! ");
+                            ResetColor();
+                            WriteLine("Clique qualquer tecla para excluir a turma.\n");
+                            turmas.RemoveAt(indexTurma);
+                            ForegroundColor = ConsoleColor.Green;
+                            WriteLine("Turma excluída com sucesso! ");
+                            ResetColor();
+                            WriteLine("Pressione qualquer tecla para voltar.");
+                            ReadKey();
+                            Clear();
+                        }
+                        else if (resposta == "n")
+                        {
+                            ForegroundColor = ConsoleColor.Red;
+                            WriteLine("Operação cancelada! ");
+                            ResetColor();
+                            WriteLine("Pressione qualquer tecla para voltar.");
+                            ReadKey();
+                            Clear();
+                        }
+                        else
+                        {
+                            WriteLine("Digite uma entrada válida.");
+                        }
+                    }
+                }
+                else
+                {
+                    WriteLine("A turma não existe em nossos registros");
+                }
+            }
+            
         }
         private static void gravarArquivo()
         {
-            Clear();
-            WriteLine("GRAVAR ARQUIVO:\n");
-            try
+            if (alunos.Count == 0)
             {
-                StreamWriter dadosnomes;
-                string arq = @"C:\Nomes\nomes.txt";
-                dadosnomes = File.CreateText(arq);
-                for (var i = 0; i < alunos.Count; i++)
+                WriteLine("Nenhum Aluno cadastrado.");
+                ReadKey();
+                Clear();
+                return;
+            }
+            else
+            {
+                WriteLine("GRAVAR ARQUIVO:\n");
+                try
                 {
-                    string cod = codigoAluno[i];
-                    int indexTurma = codigoIdentificador.IndexOf(cod);
-                    string nomeTurma = turmas[indexTurma];
-                    dadosnomes.WriteLine($"Turma: {nomeTurma} || Nome: {alunos[i]} || 1° Nota: {notas1[i]} || 2° Nota: {notas2[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)}");
+                    StreamWriter dadosnomes;
+                    string arq = @"C:\Nomes\nomes.txt";
+                    dadosnomes = File.CreateText(arq);
+                    for (var i = 0; i < alunos.Count; i++)
+                    {
+                        string cod = codigoAluno[i];
+                        int indexTurma = codigoIdentificador.IndexOf(cod);
+                        string nomeTurma = turmas[indexTurma];
+                        dadosnomes.WriteLine($"Turma: {nomeTurma} || Nome: {alunos[i]} || 1° Nota: {notas1[i]} || 2° Nota: {notas2[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)} || Código identificador do Aluno: {codigoAluno[i]} || Código identificador Turma: {cod}");
+                    }
+                    dadosnomes.Close();
                 }
-                dadosnomes.Close();
-            }
-            catch (Exception e)
-            {
-                WriteLine($"{e.Message}");
-            }
-            finally
-            {
-                ForegroundColor = ConsoleColor.Green;
-                WriteLine("<<<<<< DADOS GRAVADOS COM SUCESSO! >>>>>>");
-                ResetColor();
+                catch (Exception e)
+                {
+                    WriteLine($"{e.Message}");
+                }
+                finally
+                {
+                    ForegroundColor = ConsoleColor.Green;
+                    WriteLine("<<<<<< DADOS GRAVADOS COM SUCESSO! >>>>>>");
+                    ResetColor();
 
+                }
+                Clear();
             }
-            Clear();
+            
         }
 
         private static void lerArquivo()
         {
-            Clear();
-            WriteLine("LER ARQUIVO:\n");
-            var nome = File.ReadAllLines(@"C:\Nomes\nomes.txt");
-            for (int i = 0; i < nome.Length; i++)
+            if (alunos.Count == 0)
             {
-                alunos.Add(nome[i]);
+                WriteLine("Nenhum Aluno cadastrado.");
+                ReadKey();
+                Clear();
+                return;
             }
-            ForegroundColor = ConsoleColor.Green;
-            WriteLine("<<<<<<< LEITURA REALIZADA COM SUCESSO! >>>>>>>");
-            ResetColor();
-            Clear();
+            else
+            {
+                WriteLine("LER ARQUIVO:\n");
+                var nome = File.ReadAllLines(@"C:\Nomes\nomes.txt");
+                for (int i = 0; i < nome.Length; i++)
+                {
+                    alunos.Add(nome[i]);
+                }
+                ForegroundColor = ConsoleColor.Green;
+                WriteLine("<<<<<<< LEITURA REALIZADA COM SUCESSO! >>>>>>>");
+                ResetColor();
+                Clear();
+            }
         }
     }
 
