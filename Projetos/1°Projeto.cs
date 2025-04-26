@@ -190,7 +190,7 @@ namespace AtividadeValendoNota
                 string nome = "";
                 do
                 {
-                    Write("Digite o nome do aluno:");
+                    Write("Digite o nome do aluno: ");
                     nome = ReadLine();
                     if (string.IsNullOrWhiteSpace(nome))
                     {
@@ -695,7 +695,7 @@ namespace AtividadeValendoNota
                         double tent, tent1;
                         double novaNota1 = 0, novaNota2 = 0;
                         WriteLine($"O aluno a ser editado é o {alunos[indexAluno]}.\n");
-                        WriteLine("Digite a nova 1ª nota do aluno");
+                        Write("Digite a nova 1ª nota do aluno: ");
                         try
                         {
                             do
@@ -709,7 +709,7 @@ namespace AtividadeValendoNota
                                 novaNota1 = tent;
                                 break;
                             } while (true);
-                            
+
                         }
                         catch (System.FormatException)
                         {
@@ -723,7 +723,7 @@ namespace AtividadeValendoNota
                         }
                         notas1[indexAluno] = novaNota1;
                         WriteLine();
-                        WriteLine("Digite a nova 2ª nota do aluno");
+                        Write("\nDigite a nova 2ª nota do aluno: ");
                         try
                         {
                             do
@@ -750,7 +750,7 @@ namespace AtividadeValendoNota
                         }
                         notas2[indexAluno] = novaNota2;
                         ForegroundColor = ConsoleColor.Green;
-                        WriteLine("Nova nota cadastrada com sucesso!\n");
+                        WriteLine("\nNova nota cadastrada com sucesso!\n");
                         ResetColor();
                         double novaMedia = (notas1[indexAluno] + notas2[indexAluno]) / 2;
                         mediaCadaAluno[indexAluno] = novaMedia;
@@ -940,7 +940,7 @@ namespace AtividadeValendoNota
                         }
                         notas1[indexAluno] = novaNota1;
                         WriteLine();
-                        WriteLine("Digite a nova 2ª nota do aluno");
+                        Write("\nDigite a nova 2ª nota do aluno: ");
                         try
                         {
                             do
@@ -967,7 +967,7 @@ namespace AtividadeValendoNota
                         }
                         notas2[indexAluno] = novaNota2;
                         ForegroundColor = ConsoleColor.Green;
-                        WriteLine("Nota alterada com sucesso!\n");
+                        WriteLine("\nNota alterada com sucesso!\n");
                         ResetColor();
                         double novaMedia = (notas1[indexAluno] + notas2[indexAluno]) / 2;
                         mediaCadaAluno[indexAluno] = novaMedia;
@@ -1251,95 +1251,69 @@ namespace AtividadeValendoNota
         }
         private static void gravarArquivo()
         {
-            WriteLine("GRAVAR ARQUIVO:\n");
             if (alunos.Count == 0)
             {
-                WriteLine("Nenhum Aluno cadastrado.");
-                WriteLine("Pressione qualquer tecla para voltar.");
-                ReadKey();
-                Clear();
+                Console.WriteLine("Nenhum aluno cadastrado.");
                 return;
             }
-            else
-            {
-                try
-                {
-                    StreamWriter dadosnomes;
-                    string arq = @"C:\Nomes\TrabalhoEmerson.txt";
-                    dadosnomes = File.CreateText(arq);
-                    for (var i = 0; i < alunos.Count; i++)
-                    {
-                        string cod = codigoAluno[i];
-                        int indexTurma = codigoIdentificador.IndexOf(cod);
-                        string nomeTurma = turmas[indexTurma];
-                        dadosnomes.WriteLine($"Turma: {nomeTurma} || Código identificador da turma: {cod} || Nome: {alunos[i]} || 1° Nota: {notas1[i]} || 2° Nota: {notas2[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)} || Código identificador do Aluno: {codigoAluno[i]} || Código identificador Turma: {cod}");
-                    }
-                    dadosnomes.Close();
-                }
-                catch (Exception e)
-                {
-                    WriteLine($"{e.Message}");
-                }
-                finally
-                {
-                    ForegroundColor = ConsoleColor.Green;
-                    WriteLine("DADOS GRAVADOS COM SUCESSO!");
-                    ResetColor();
-                    WriteLine("Pressione qualquer tecla para voltar.");
-                    ReadKey();
-                    Clear();
-                }
-                
-            }
 
+            string caminhoArquivo = "TrabalhoEmerson.csv";
+            using (var writer = new StreamWriter(caminhoArquivo, false))
+            {
+                writer.WriteLine("Nome,Turma,CodigoIdentificador,CodigoAluno,Nota1,Nota2,Media");
+                for (int i = 0; i < alunos.Count; i++)
+                {
+                    int idxTurma = codigoIdentificador.IndexOf(codigoAluno[i]);
+                    string nomeTurma = idxTurma >= 0 ? turmas[idxTurma] : "";
+
+                    writer.WriteLine($"{alunos[i]},{nomeTurma},{codigoIdentificador[idxTurma]},{codigoAluno[i]},{notas1[i]},{notas2[i]},{mediaCadaAluno[i]}");
+                }
+            }
+            ForegroundColor = ConsoleColor.Green;
+            WriteLine("Arquivo gravado com sucesso em: " + Path.GetFullPath(caminhoArquivo));
+            ResetColor();
         }
 
         private static void lerArquivo()
         {
-            string caminhoArquivo = @"C:\Nomes\TrabalhoEmerson.txt";
-
+            string caminhoArquivo = "TrabalhoEmerson.csv";
             if (!File.Exists(caminhoArquivo))
             {
-                WriteLine("O arquivo não foi encontrado. Certifique-se de que os dados foram gravados antes de tentar ler.");
-                WriteLine("Pressione qualquer tecla para voltar.");
-                ReadKey();
-                Clear();
+                Console.WriteLine("Arquivo não encontrado.");
                 return;
             }
 
-            WriteLine("LER ARQUIVO:\n");
-            try
+            alunos.Clear();
+            turmas.Clear();
+            codigoIdentificador.Clear();
+            codigoAluno.Clear();
+            notas1.Clear();
+            notas2.Clear();
+            mediaCadaAluno.Clear();
+
+            var linhas = File.ReadAllLines(caminhoArquivo);
+            for (int i = 1; i < linhas.Length; i++)
             {
-                string[] linhas = File.ReadAllLines(caminhoArquivo);
-                foreach (string linha in linhas)
+                var col = linhas[i].Split(',');
+                if (col.Length != 7) continue;
+
+                alunos.Add(col[0]);
+
+                string turmaNome = col[1];
+                string codId = col[2];
+                if (!codigoIdentificador.Contains(codId))
                 {
-                    alunos.Add(linha);
-                    turmas.Add(linha);
-                    codigoIdentificador.Add(linha);
-                    codigoAluno.Add(linha);
-                    notas1.Add(Convert.ToDouble(linha)); 
-                    notas2.Add(Convert.ToDouble(linha));
-                    mediaCadaAluno.Add(Convert.ToDouble(linha));
+                    turmas.Add(turmaNome);
+                    codigoIdentificador.Add(codId);
                 }
-                ForegroundColor = ConsoleColor.Green;
-                WriteLine("\nLEITURA REALIZADA COM SUCESSO!");
-                ResetColor();
-                WriteLine("Pressione qualquer tecla para voltar.");
-                ReadKey();
-                Clear();
+                codigoAluno.Add(codId);
+                notas1.Add(Convert.ToDouble(col[4]));
+                notas2.Add(Convert.ToDouble(col[5]));
+                mediaCadaAluno.Add(Convert.ToDouble(col[6]));
             }
-            catch (Exception e)
-            {
-                WriteLine($"Erro ao ler o arquivo: {e.Message}");
-            }
-            finally
-            {
-                WriteLine("Pressione qualquer tecla para voltar.");
-                ReadKey();
-                Clear();
-            }
+            ForegroundColor = ConsoleColor.Green;
+            WriteLine("Leitura concluída com sucesso. Total de alunos: " + alunos.Count);
+            ResetColor();
         }
-
     }
-
 }
