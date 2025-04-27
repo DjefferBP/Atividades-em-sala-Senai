@@ -486,9 +486,20 @@ namespace AtividadeValendoNota
                     if (opcao == "s")
                     {
                         WriteLine($"O aluno a ser editado é o {alunos[index]}.\n");
-                        Write("Regite o nome: ");
-                        string novoNome = ReadLine();
-                        var igual = alunos.Any(x => x == novoNome);
+                        string nomeNovo = "";
+                        do
+                        {
+                            Write("Redigite o nome do aluno: ");
+                            nomeNovo = ReadLine();
+                            if (string.IsNullOrWhiteSpace(nomeNovo))
+                            {
+                                WriteLine("O nome do aluno não pode ser vazio. Por favor, insira um valor válido.");
+                                ReadKey();
+                                Clear();
+                                return;
+                            }
+                        } while (string.IsNullOrWhiteSpace(nomeNovo));
+                        var igual = alunos.Any(x => x == nomeNovo);
                         if (igual == true)
                         {
                             WriteLine("Este nome já está cadastrado. Tente novamente.");
@@ -499,7 +510,7 @@ namespace AtividadeValendoNota
                         }
                         else
                         {
-                            alunos[index] = novoNome;
+                            alunos[index] = nomeNovo;
                             ForegroundColor = ConsoleColor.Green;
                             WriteLine("Nome alterado com sucesso!");
                             ResetColor();
@@ -560,10 +571,32 @@ namespace AtividadeValendoNota
                     if (string.IsNullOrEmpty(codigoTurmaAtual))
                     {
                         WriteLine($"O aluno {alunos[indexAluno]} não está associado a nenhuma turma.");
-                        WriteLine("Digite o nome da nova turma: ");
-                        string novaTurma = ReadLine();
-                        WriteLine("Digite o código da nova turma: ");
-                        string novoCodigoTurma = ReadLine();
+                        string novaTurma = "";
+                        do
+                        {
+                            Write("Digite para qual turma o aluno será transferido: ");
+                            novaTurma = ReadLine();
+                            if (string.IsNullOrWhiteSpace(novaTurma))
+                            {
+                                WriteLine("A turma do aluno não pode ser vazio. Por favor, insira um valor válido.");
+                                ReadKey();
+                                Clear();
+                                return;
+                            }
+                        } while (string.IsNullOrWhiteSpace(novaTurma));
+                        string novoCodigoTurma = "";
+                        do
+                        {
+                            Write("\nDigite o novo código da turma do aluno: ");
+                            novoCodigoTurma = ReadLine();
+                            if (string.IsNullOrWhiteSpace(novoCodigoTurma))
+                            {
+                                WriteLine("O código da turma não pode ser vazio. Por favor, insira um valor válido.");
+                                ReadKey();
+                                Clear();
+                                return;
+                            }
+                        } while (string.IsNullOrWhiteSpace(novoCodigoTurma));
 
                         int indexNovaTurma = turmas.IndexOf(novaTurma);
                         int indexNovoCodigo = codigoIdentificador.IndexOf(novoCodigoTurma);
@@ -611,10 +644,32 @@ namespace AtividadeValendoNota
                         string opcao = ReadLine().ToLower();
                         if (opcao == "s")
                         {
-                            Write("\nPara qual turma o aluno será transferido: ");
-                            string novaTurma = ReadLine();
-                            Write("\nDigite o código da turma que o aluno será transferido: ");
-                            string novoCodigoTurma = ReadLine();
+                            string novaTurma = "";
+                            do
+                            {
+                                Write("Digite para qual turma o aluno será transferido: ");
+                                novaTurma = ReadLine();
+                                if (string.IsNullOrWhiteSpace(novaTurma))
+                                {
+                                    WriteLine("A turma do aluno não pode ser vazio. Por favor, insira um valor válido.");
+                                    ReadKey();
+                                    Clear();
+                                    return;
+                                }
+                            } while (string.IsNullOrWhiteSpace(novaTurma));
+                            string novoCodigoTurma = "";
+                            do
+                            {
+                                Write("Digite o código da nova turma do aluno: ");
+                                novoCodigoTurma = ReadLine();
+                                if (string.IsNullOrWhiteSpace(novoCodigoTurma))
+                                {
+                                    WriteLine("O código da turma não pode ser vazio. Por favor, insira um valor válido.");
+                                    ReadKey();
+                                    Clear();
+                                    return;
+                                }
+                            } while (string.IsNullOrWhiteSpace(novoCodigoTurma));
 
                             int indexNovaTurma = turmas.IndexOf(novaTurma);
                             int indexNovoCodigo = codigoIdentificador.IndexOf(novoCodigoTurma);
@@ -812,9 +867,20 @@ namespace AtividadeValendoNota
                     {
                         double tent, tent1;
                         double novaNota1 = 0, novaNota2 = 0;
-                        Write("Regite o nome: ");
-                        string novoNome = ReadLine();
-                        var igual = alunos.Any(x => x == novoNome);
+                        string nomeNovo = "";
+                        do
+                        {
+                            Write("Redigite o nome do aluno: ");
+                            nomeNovo = ReadLine();
+                            if (string.IsNullOrWhiteSpace(nomeNovo))
+                            {
+                                WriteLine("O nome do aluno não pode ser vazio. Por favor, insira um valor válido.");
+                                ReadKey();
+                                Clear();
+                                return;
+                            }
+                        } while (string.IsNullOrWhiteSpace(nomeNovo)); ;
+                        var igual = alunos.Any(x => x == nomeNovo);
                         if (igual == true)
                         {
                             WriteLine("Este nome já está cadastrado. Tente novamente.");
@@ -825,7 +891,7 @@ namespace AtividadeValendoNota
                         }
                         else
                         {
-                            alunos[indexAluno] = novoNome;
+                            alunos[indexAluno] = nomeNovo;
                             ForegroundColor = ConsoleColor.Green;
                             WriteLine("Nome alterado com sucesso!");
                             ResetColor();
@@ -835,10 +901,32 @@ namespace AtividadeValendoNota
                         if (string.IsNullOrEmpty(codigoTurmaAtual))
                         {
                             WriteLine($"O aluno {alunos[indexAluno]} não está associado a nenhuma turma.");
-                            WriteLine("Digite o nome da nova turma: ");
-                            string novaTurma = ReadLine();
-                            WriteLine("Digite o código da nova turma: ");
-                            string novoCodigoTurma = ReadLine();
+                            string novaTurma = "";
+                            do
+                            {
+                                Write("Digite a nova turma do aluno: ");
+                                novaTurma = ReadLine();
+                                if (string.IsNullOrWhiteSpace(novaTurma))
+                                {
+                                    WriteLine("A turma do aluno não pode ser vazio. Por favor, insira um valor válido.");
+                                    ReadKey();
+                                    Clear();
+                                    return;
+                                }
+                            } while (string.IsNullOrWhiteSpace(novaTurma));
+                            string novoCodigoTurma = "";
+                            do
+                            {
+                                Write("Digite o novo código da turma do aluno: ");
+                                nomeNovo = ReadLine();
+                                if (string.IsNullOrWhiteSpace(novoCodigoTurma))
+                                {
+                                    WriteLine("O código da turma do aluno não pode ser vazio. Por favor, insira um valor válido.");
+                                    ReadKey();
+                                    Clear();
+                                    return;
+                                }
+                            } while (string.IsNullOrWhiteSpace(novoCodigoTurma));
 
                             int indexNovaTurma = turmas.IndexOf(novaTurma);
                             int indexNovoCodigo = codigoIdentificador.IndexOf(novoCodigoTurma);
@@ -1042,8 +1130,19 @@ namespace AtividadeValendoNota
             }
 
             WriteLine($"\nA turma a ser editada é o {turmas[index]} e seu código identificador é o {codigoIdentificador[indexCod]}.\n");
-            Write("Regite o nome: ");
-            string novoNome = ReadLine();
+            string novoNome = "";
+            do
+            {
+                Write("Redigite o nome da turma: ");
+                novoNome = ReadLine();
+                if (string.IsNullOrWhiteSpace(novoNome))
+                {
+                    WriteLine("O nome do aluno não pode ser vazio. Por favor, insira um valor válido.");
+                    ReadKey();
+                    Clear();
+                    return;
+                }
+            } while (string.IsNullOrWhiteSpace(novoNome));
             var igual = turmas.Any(x => x == novoNome);
             if (igual == true || novoNome == turmas[index])
             {
@@ -1053,8 +1152,19 @@ namespace AtividadeValendoNota
                 Clear();
                 return;
             }
-            Write("\nRedigite o código: ");
-            string novoCod = ReadLine();
+            string novoCod = "";
+            do
+            {
+                Write("\nDigite o novo código da turma: ");
+                novoCod = ReadLine();
+                if (!string.IsNullOrWhiteSpace(novoCod))
+                {
+                    WriteLine("O código da turma não pode ser nulo ou vazio, insira um valor válido.");
+                    ReadKey();
+                    Clear();
+                    return;
+                }
+            } while (string.IsNullOrWhiteSpace(novoCod));
             string codigoAntigo = codigoIdentificador[indexCod];
             codigoIdentificador[indexCod] = novoCod;
             turmas[index] = novoNome;
@@ -1284,6 +1394,11 @@ namespace AtividadeValendoNota
 
         private static void lerArquivo()
         {
+            if (alunos.Count == 0)
+            {
+                WriteLine("Nenhum aluno cadastrado.");
+                return;
+            }
             string caminhoArquivo = "TrabalhoEmerson.csv";
             if (!File.Exists(caminhoArquivo))
             {
