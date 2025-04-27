@@ -405,28 +405,28 @@ namespace AtividadeValendoNota
                 Clear();
                 return;
             }
-            else
+
+            Clear();
+            WriteLine("TODOS ALUNOS:\n");
+            for (var i = 0; i < mediaCadaAluno.Count; i++)
             {
-                Clear();
-                WriteLine("TODOS ALUNOS:\n");
-                for (var i = 0; i < mediaCadaAluno.Count; i++)
+                string cod = codigoAluno[i];
+                int indexTurma = codigoIdentificador.IndexOf(cod);
+                string nomeTurma;
+
+                if (indexTurma >= 0)
                 {
-                    string cod = codigoAluno[i];
-                    int indexTurma = codigoIdentificador.IndexOf(cod);
-
-                    if (indexTurma == -1)
-                    {
-                        WriteLine($"Turma: [REMOVIDA] || Código identificador da turma: [NÃO TEM] || Nome: {alunos[i]} || 1° Nota: {notas1[i]} || 2° Nota: {notas2[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)}");
-                        continue;
-                    }
-
-                    string nomeTurma = turmas[indexTurma];
-                    WriteLine($"Turma: {nomeTurma} || Código identificador da turma: {cod} || Nome: {alunos[i]} || 1° Nota: {notas1[i]} || 2° Nota: {notas2[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)}");
+                    nomeTurma = turmas[indexTurma];
                 }
-                WriteLine("Pressione qualquer tecla para voltar.");
-                ReadKey();
-                Clear();
+                else
+                {
+                    nomeTurma = "[REMOVIDA]";
+                }
+                WriteLine($"Turma: {nomeTurma} || Código identificador da turma: {cod} || Nome: {alunos[i]} || 1° Nota: {notas1[i]} || 2° Nota: {notas2[i]} || Média: {Math.Round(mediaCadaAluno[i], 1)}");
             }
+            WriteLine("Pressione qualquer tecla para voltar.");
+            ReadKey();
+            Clear();
         }
 
 
@@ -1253,7 +1253,7 @@ namespace AtividadeValendoNota
         {
             if (alunos.Count == 0)
             {
-                Console.WriteLine("Nenhum aluno cadastrado.");
+                WriteLine("Nenhum aluno cadastrado.");
                 return;
             }
 
@@ -1264,8 +1264,16 @@ namespace AtividadeValendoNota
                 for (int i = 0; i < alunos.Count; i++)
                 {
                     int idxTurma = codigoIdentificador.IndexOf(codigoAluno[i]);
-                    string nomeTurma = idxTurma >= 0 ? turmas[idxTurma] : "";
+                    string nomeTurma;
 
+                    if (idxTurma >= 0)
+                    {
+                        nomeTurma = turmas[idxTurma];
+                    }
+                    else
+                    {
+                        nomeTurma = "[REMOVIDA]";
+                    }
                     writer.WriteLine($"{alunos[i]},{nomeTurma},{codigoIdentificador[idxTurma]},{codigoAluno[i]},{notas1[i]},{notas2[i]},{mediaCadaAluno[i]}");
                 }
             }
